@@ -1,0 +1,19 @@
+http://note.youdao.com/styles/90644221.glb.ie8lt.csss
+up{_font-size:14px}
+
+#logo a{position:relative}
+#siteNav a{_border-bottom-color:#f5f5f5}
+
+#bannerContainer li{_display:none;_width:960px;_height:425px}
+#bannerContainer .on{_display:block}
+
+.play-video{background-image:url(../AppData/Local/Microsoft/Windows/INetCache/IE/TINT08C7/images/1a05fed9.video-btn-8.png)}
+
+.mod-hd{_padding-top:2px;_height:33px}
+
+.widget-slide{padding-bottom:20px;}
+.widget-slide-index a:hover,.widget-slide-index .on{background:#aaa !important;}
+
+.post-author{_display:inline}
+.brd-7{font-size:0}
+.dialog{_position:absolute}

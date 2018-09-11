@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
+	default-autowire="byName" default-lazy-init="false">
+	<!-- 加载系统配置 -->
+	<context:property-placeholder
+		ignore-resource-not-found="true" local-override="true"
+		location="classpath:config/wuyuan.properties" />
+
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource"
+		lazy-init="true">
+		<property name="alias" value="dovey" />
+		<property name="driver" value="${proxool.jdbc.driver}" />
+		<property name="driverUrl" value="${proxool.jdbc.url}" />
+		<property name="user" value="${proxool.jdbc.username}" />
+		<property name="password" value="${proxool.jdbc.password}" />
+		<property name="maximumConnectionCount" value="${proxool.jdbc.pool.maximumConnectionCount}" />
+		<property name="minimumConnectionCount" value="${proxool.jdbc.pool.minimumConnectionCount}" />
+		<property name="simultaneousBuildThrottle" value="20" />
+		<property name="prototypeCount" value="${proxool.jdbc.pool.prototypeCount}" />
+		<property name="trace" value="${proxool.jdbc.pool.trace}" />
+		<property name="verbose" value="${proxool.jdbc.pool.verbose}" />
+		<property name="maximumActiveTime" value="${proxool.jdbc.pool.maximumActiveTime}" />
+		<property name="houseKeepingTestSql" value="${proxool.jdbc.pool.houseKeepingTestSql}" />
+	</bean>
+
+	<!-- 数据库会话工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations"
+			value="classpath*:com/wuyuan/webapps/mappers/**/*.xml" />
+		<property name="plugins">
+			<list>
+				<bean
+					class="com.wuyuan.core.supports.mybatis.PaginationInterceptor">
+					<property name="dialect">
+						<bean
+							class="com.wuyuan.core.supports.mybatis.pagination.dialect.MySQLDialect" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 事务管理器配置 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="do*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<!-- <tx:method name="get*" propagation="SUPPORTS" read-only="true" /> -->
+			<!-- <tx:method name="check*" propagation="SUPPORTS" read-only="true" 
+				/> -->
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- transaction configurations -->
+	
+	<!-- business component -->
+	<context:component-scan base-package="com.wuyuan.webapps" />
+	<!-- <aop:config> -->
+	<!-- <aop:pointcut id="pointcut_parking" expression="execution(* com.chinadovey.parking.webapps.biz.*.*(..))" 
+		/> -->
+	<!-- <aop:advisor pointcut-ref="pointcut_parking" advice-ref="txAdvice" 
+		/> -->
+	<!-- </aop:config> -->
+
+	<!-- 视图解释器 -->
+	<bean id="freeMarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="preTemplateLoaders">
+			<list>
+				<bean
+					class="com.wuyuan.core.supports.freemarker.TemplateLoader" />
+			</list>
+		</property>
+		<property name="templateLoaderPath"
+			value="classpath**:com/wuyuan/webapps/freemarker/" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="tag_syntax">auto_detect</prop>
+				<prop key="template_update_delay">5</prop>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
+				<prop key="locale">zh_CN</prop>
+				<prop key="boolean_format">true,false</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<prop key="number_format">0.######</prop>
+				<prop key="whitespace_stripping">true</prop>
+			</props>
+		</property>
+		<!--  暂不加入权限 
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="SecuValidate">
+					<bean
+						class="com.chinadovey.parking.core.secu.SecuValidateTemplateDirectiveModel" />
+				</entry>
+			</map>
+		</property> -->
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="prefix"
+			value="com/wuyuan/webapps/freemarker/" />
+		<property name="suffix" value=".ftl" />
+		<property name="order" value="9" />
+		<property name="requestContextAttribute" value="request" />
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="com.wuyuan.core.supports.spring.JstlView" />
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="0" />
+	</bean>
+
+
+	<!-- 拦截器.设置了字符集-->
+	<mvc:interceptors>
+	  <mvc:interceptor>
+		<mvc:mapping path="/**" />
+			<bean
+				class="com.wuyuan.core.supports.spring.InterceptorSessiionCheck">
+				<property name="loginUrl" value="/login/input" />
+				<property name="uncheckRegexUrls">
+					<list>
+	    				<value>/android/*</value>
+	    				<value>/serviceWechat/*</value>
+	    				<value>/serviceProvidePay/*</value>
+	    				<value>/wechat/*</value>
+	    				<value>/web/*</value>
+	    				<value>/wechatSession/*</value>
+	    				<value>/qrCode/*</value>
+	    				<value>/userOperate/*</value>
+	    				<value>/login/check.jpg</value>
+					</list>
+				</property>
+			   	<property name="uncheckUrls">
+					<list>
+	    				<value>/system/saveFileByServerId</value>
+	    				
+						<value>/wechat/default</value>
+						<value>/wechat/operate</value>
+						<value>/wechat/about</value>
+						<value>/wechat/advance</value>
+						<value>/wechat/system</value>
+						<value>/wechat/parking</value>
+
+						<!-- android请求路径 -->
+						<value>/android/adviseApi/complaint</value>
+                        <value>/baseInfo/operator/linkoperate</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:interceptor>
+	
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.wuyuan.core.supports.spring.InterceptorCharset" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- 切片 -->
+	<aop:aspectj-autoproxy />
+
+	<mvc:resources
+		location="classpath:/com/wuyuan/webapps/statics/"
+		mapping="/statics/**" />
+	<mvc:default-servlet-handler />
+
+	<!-- 自动注入配置 -->
+	<context:annotation-config />
+	<mvc:annotation-driven />
+
+	<!-- 统一的异常处理  暂不处理-->
+	<!--  <bean id="exceptionResolver"
+		class="com.chinadovey.parking.core.supports.spring.DoveyHandlerExceptionResolver">
+		<property name="order" value="0" />
+	</bean>-->
+
+	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+</beans>

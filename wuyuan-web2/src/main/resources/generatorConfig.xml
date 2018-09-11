@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry location="lib/mysql-connector-java-5.1.26.jar" />
+	<context id="streetlight">
+		<plugin
+			type="org.chinadovey.tools.mybatis.generator.MySQLPaginationPlugin2" />
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://39.106.188.246:3306/wuyuan?characterEncoding=UTF-8"
+			userId="root" password="131122ab" />
+		<javaModelGenerator targetPackage="com.wuyuan.webapps.pojo"
+			targetProject="src/main/java" />
+		<sqlMapGenerator targetPackage="com.wuyuan.webapps.mappers.gen"
+			targetProject="src/main/resources" />
+		<javaClientGenerator targetPackage="com.wuyuan.webapps.mappers.gen"
+			targetProject="src/main/java" type="XMLMAPPER" />
+		
+<!-- 
+	<table tableName="user" domainObjectName="User" /> 
+	<table tableName="liuyan" domainObjectName="Liuyan" />
+	<table tableName="authority" domainObjectName="Authority" />
+	<table tableName="user_rel_authority" domainObjectName="UserRelAuthority" />
+-->
+		
+	</context>
+</generatorConfiguration>
