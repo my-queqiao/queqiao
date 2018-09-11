@@ -59,7 +59,7 @@ public class SaoLeiController {
 		return json;
 	}
 	/**
-	 * 计算周围8个方块中雷的个数，只存储周围有雷的方块的id
+	 * 计算周围8个方块中雷的个数，只存储周围有雷的方块的id.
 	 */
 	public void more(List<Lei> leis){
 		/*private int roundNum;//周围雷的个数。包括0个
