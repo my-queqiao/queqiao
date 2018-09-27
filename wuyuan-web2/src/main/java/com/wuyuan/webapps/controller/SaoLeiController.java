@@ -77,7 +77,8 @@ public class SaoLeiController {
 				sb.append(",");
 			}
 			//查询左上（特殊位置id：31）
-			if(currentId > 30 && (currentId-30-1)%30 != 0 && leis.get(currentId-30-1-1).isHasLei() == true){//1：上存在 ，2：上左不能被30整除，3、上左有雷
+			if(currentId > 30 && (currentId-30-1)%30 != 0 && leis.get(currentId-30-1-1).isHasLei() == true){
+				//1：上存在 ，2：上左不能被30整除(目的是排除左上没有格子的格子，比如第31、61个格子：减30再减1，再对30取余，正好被整除、余数是0，证明他左上没有格子，所以就被排除了。)，3、上左有雷
 				leiNumber++;
 				sb.append(currentId-30-1);
 				sb.append(",");
