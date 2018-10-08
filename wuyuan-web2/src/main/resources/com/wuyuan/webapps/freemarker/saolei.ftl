@@ -1,8 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     	<meta charset="utf-8" />
-        <title>留言</title>
-</head>  
+        <title>扫雷游戏网页在线玩</title>
+</head>
 <body onselectstart="return false" style="background-color: aliceblue;"><!-- 该属性阻止html双击选中事件 -->
 		
 		<a href="${request.contextPath!}/toLiuyanSaolei" target="_blank" 
