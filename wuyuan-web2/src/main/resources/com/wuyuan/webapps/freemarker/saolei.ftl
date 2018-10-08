@@ -3,21 +3,36 @@
     	<meta charset="utf-8" />
         <title>留言</title>
 </head>  
-<body onselectstart="return false"><!-- 该属性阻止html双击选中事件 -->
+<body onselectstart="return false" style="background-color: aliceblue;"><!-- 该属性阻止html双击选中事件 -->
 		
 		<a href="${request.contextPath!}/toLiuyanSaolei" target="_blank" 
 					style="position: absolute;left: 86%;top: 5%;color: black;font-family: 仿宋;font-size: 20px;cursor:pointer;">
 						留言
 					</a>
 		
-		<div id="leiShuliang" style="position: relative;margin-left: 30%;top: 17%;color:blue;">
+						<div style="position:absolute;margin-left: 80%;top: 30%;color: blue;font-family: 仿宋;">
+							自定义地雷数量：<input id="number" style="width: 15%;" value="99" /><br />
+							<input type="button" onclick="sendNumber();" value="确认" /><br/>
+							<span style="color: black;">提示1：格子总数不变，为扫雷高级标准的480个</span><br/>
+							<span style="color: black;">提示2：地雷数量可变，默认是99个</span>
+						</div>
+						
+						<div id="shuaxin" style="position:absolute;margin-left: 80%;top: 60%;color:red;font-family: 仿宋;">
+						<img style='width: 200px;height: 200px;' src='${request.contextPath!}/statics/img/timg.gif'/>
+							点喵刷新页面
+						</div>
+		<div id="jieshu" style="position: relative;margin-left: 30%;top: 15%;color:red;font-family: 仿宋;">
+			&nbsp
+		</div>
+		<div id="leiShuliang" style="position: relative;margin-left: 30%;top: 17%;color:blue;font-family: 仿宋;">
 			剩余雷数量：0
 		</div>
-		<div id="jishi" style="position: relative;margin-left: 64%;top: 17%;color:blue;">
+		<div id="jishi" style="position: relative;margin-left: 64%;top: 17%;color:blue;font-family: 仿宋;">
 			已耗时：0秒
 		</div>
 		
 		<div id="leis" style="position: relative;margin-left: 30%;top: 20%;height: 400px;width: 750px;" >
+			<!-- 展示雷区页面 -->
 		</div>
 </body>
 </html>
@@ -25,10 +40,34 @@
 <script src="${request.contextPath!}/statics/js/jquery-1.8.3.min.js" type="text/javascript"></script>
 <script src="${request.contextPath!}/statics/js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
 	
-<script>	
+<script>
+	$("#shuaxin").click(function(){
+		location.reload();
+	});
+	function sendNumber(){
+		var number = $("#number").val();
+		//校验
+		if (number=="") { 
+	　　　　　　alert("不能为空"); 
+	　　　　　　return false; 
+	　　　　} 
+　　　　if (!(/(^[1-9]\d*$)/.test(number))) {
+　　　　　　alert("输入的不是正整数"); 
+　　　　　　return false; 
+　　　　}else {
+		if(number>480){
+			alert("数字不能过大");
+			return false;
+		}
+	　 }
+		$.post('${request.contextPath!}/sendNumber?number='+number,
+			function(json){
+				location.href = "${request.contextPath!}/saolei";
+			});
+	}
 	var leis;
 	getLeis();
-	function getLeis(){ //获取留言列表
+	function getLeis(){ 
 		$.post('${request.contextPath!}/getLeis',
 				function(json){
 						leis = json.leis;
@@ -100,15 +139,38 @@
 		var arr=value.split(":");
 		
 		if(arr[0] == "true"){ //后台传的是boolean，应该是因为标签中拼字符串的缘故，拼成了"true"
+			
+			//排错之后显示所有雷的位置
+			for(var i = 1;i<=leis.length;i++){
+				//                有无雷arr[0]     周围雷的数量arr[1]       周围雷的idsarr[2]      周围方块的idsarr[3]
+				//"value="+leis[i-1].hasLei+":"+leis[i-1].roundNum+":"+leis[i-1].leiIds+":"+leis[i-1].roundIds+" "+ 	
+				
+				var hasLei = leis[i-1].hasLei;
+				var roundNum = leis[i-1].roundNum;
+				if(hasLei == true){  //如果有雷的方块都有“雷”字，并且“雷”字的数量等于实际雷数，
+					$("#"+i+"").text("雷");
+		    		$("#"+i+"").css("color","red");
+		    		$("#"+i+"").css("background-color","white");
+				}else if(roundNum > 0){
+					$("#"+i+"").text(roundNum);
+					$("#"+i+"").css("color","blue");
+					$("#"+i+"").css("background-color","white");
+				}else if(roundNum == 0){
+					$("#"+i+"").text("");
+					$("#"+i+"").css("background-color","white");
+				}
+			}
+			
     		$(ob).text("×");
     		$(ob).css("color","red");
     		$(ob).css("background-color","white");
     		stopjishi=1;
     		var a = $("#jishi").text();
 			$("#leis").find("button").attr("disabled","disabled");
-			$("#jishi").text(a+"。踩到雷了,游戏结束！");
-    		
-			alert("踩到雷了,游戏结束");
+			//$("#jishi").text(a+"。踩到雷了,游戏结束！");
+			$("#jieshu").text("*处有雷，您排错了，游戏结束！");
+			//alert("踩到雷了,游戏结束");
+			
 		}else{
 			//该方块没有雷。
 			var g = arr[1];
@@ -171,13 +233,35 @@
     						//如果全部正确的排完了，则单击剩余的方块，注意：调用单击方法
     						leiNumber++;
     					}else if(arr2[0] == "false" && m == "雷"){//排错了
+    						
+    						//排错之后显示所有雷的位置
+    						for(var i = 1;i<=leis.length;i++){
+    							//                有无雷arr[0]     周围雷的数量arr[1]       周围雷的idsarr[2]      周围方块的idsarr[3]
+    							//"value="+leis[i-1].hasLei+":"+leis[i-1].roundNum+":"+leis[i-1].leiIds+":"+leis[i-1].roundIds+" "+ 	
+    							
+    							var hasLei = leis[i-1].hasLei;
+    							if(hasLei == true){  //如果有雷的方块都有“雷”字，并且“雷”字的数量等于实际雷数，
+    								$("#"+i+"").text("雷");
+    					    		$("#"+i+"").css("color","red");
+    					    		$("#"+i+"").css("background-color","white");
+    							}else if(roundNum > 0){
+    								$("#"+i+"").text(roundNum);
+    								$("#"+i+"").css("color","blue");
+    								$("#"+i+"").css("background-color","white");
+    							}else if(roundNum == 0){
+    								$("#"+i+"").text("");
+    								$("#"+i+"").css("background-color","white");
+    							}
+    						}
+    						
     						$("#"+id+"").text("*");
     						stopjishi=1;
     						var a = $("#jishi").text();
 							$("#leis").find("button").attr("disabled","disabled");
-							$("#jishi").text(a+"。*处排错了，游戏结束！");
-    						
-    						alert("*处排错了，游戏结束");
+							//$("#jishi").text(a+"。*处排错了，游戏结束！");
+							
+							$("#jieshu").text("*处有雷，您排错了，游戏结束！");
+    						//alert("*处排错了，游戏结束");
     					}
     				}
     				
@@ -225,7 +309,7 @@
 		if(ob2 == "口"){	
     		$(ob).text("雷");
     		$(ob).css("color","red");
-    		$(ob).css("backgroud-color","white");
+    		$(ob).css("background-color","white");
     		
     		var a = $("#leiShuliang").text();	
     		var a2 = a.split("：");
@@ -263,9 +347,9 @@
 			stopjishi = 1 ;
 			var a = $("#jishi").text();
 			
-			$("#jishi").text(a+"。恭喜你，胜利了！");
+			//$("#jishi").text(a+"。恭喜你，胜利了！");
 			
-			alert("恭喜你，胜利了！");
+			$("#jieshu").text("恭喜您完成了排雷任务！");
 			
 			}
 		

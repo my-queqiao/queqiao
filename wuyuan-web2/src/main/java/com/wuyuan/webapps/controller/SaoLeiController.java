@@ -3,6 +3,9 @@ package com.wuyuan.webapps.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.Session;
+import javax.servlet.http.HttpSession;
+
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
@@ -33,7 +36,8 @@ public class SaoLeiController {
 	@SecurityIgnoreHandler
 	@RequestMapping("getLeis")
 	@ResponseBody
-	public JSONObject sl(){
+	public JSONObject sl(HttpSession session){
+		JSONObject json = new JSONObject();
 		List<Lei> leis = new ArrayList<Lei>();
 		//1、生成480个方块，都无雷，周围雷的数量为0
 		for(int i=1;i<=480;i++){
@@ -44,8 +48,15 @@ public class SaoLeiController {
 			leis.add(lei);
 		}
 		//2、随机布雷。方法：遍历480个方块，
-		int number = 0;
-		bulei(leis, number);
+		int number = 0;//用户输入的雷个数
+		if(number > 480){//防止有人恶意输入数字
+			number = 0;
+		}
+		int count = 0;//雷数量计数
+		if(session.getAttribute("sendNumber") != null){
+			number = (Integer)session.getAttribute("sendNumber");
+		}
+		bulei(leis, number,count);
 		/*
 		 * 3、计算周围雷的个数，存储周围雷的id
 		 *  private int roundNum;//周围雷的个数。包括0个
@@ -54,7 +65,6 @@ public class SaoLeiController {
 		 */
 		more(leis);
 		//4、测试，返回给前端，展示看看
-		JSONObject json = new JSONObject();
 		json.put("leis", leis);
 		return json;
 	}
@@ -184,8 +194,14 @@ public class SaoLeiController {
 	 * 随机布雷 99个雷(高级)。
 	 * @param leis
 	 */
-	public static void bulei(List<Lei> leis,int number){
-		int shuliang = 99;
+	public void bulei(List<Lei> leis,int number,int count){
+		//int jishu = 0;
+		int shuliang = 99;//高级
+		if(number == 0){
+			shuliang = 99;//高级
+		}else{
+			shuliang = number;
+		}
 		for(Lei lei:leis){
 			int random = (int)(Math.random()*10+1);//【1，11）
 			double random2 = (int)(Math.random()*10);//【0，10）
@@ -193,23 +209,30 @@ public class SaoLeiController {
 			 * 480个方块的id：1-480，对随机数取余，再用该余数和另外一个随机数比较。
 			 */
 			if(lei.getId() % random == random2 && lei.isHasLei() == false){
-				number++;
+				count++;
 				lei.setHasLei(true);
 				
-				if(number == shuliang){
+				if(count == shuliang){
 					return;
 				}
 			}
 		}
 		//测试得出，第一次布雷不足99个，大概需要三次布雷
-		if(number >= shuliang){
+		if(count >= shuliang){
 			return;
 		}else{
-			bulei(leis, number);//此时number的值是多少？注意可能有错误
+			bulei(leis, number,count);//此时number的值是多少？注意可能有错误
 		}
 	}
 	
-	
+	@SecurityIgnoreHandler
+	@RequestMapping("sendNumber")
+	@ResponseBody
+	public JSONObject sl(Integer number,HttpSession session){
+		JSONObject json = new JSONObject();
+		session.setAttribute("sendNumber", number);
+		return json;
+	}
 	
 	
 	
