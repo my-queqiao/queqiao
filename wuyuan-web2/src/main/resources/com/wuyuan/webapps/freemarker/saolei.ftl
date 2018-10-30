@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     	<meta charset="utf-8" />
-        <title>扫雷游戏网页在线玩</title>
+        <title>java扫雷</title>
 </head>
 <body onselectstart="return false" style="background-color: aliceblue;"><!-- 该属性阻止html双击选中事件 -->
 		
@@ -21,7 +21,7 @@
 						<img style='width: 200px;height: 200px;' src='${request.contextPath!}/statics/img/timg.gif'/>
 							点喵刷新页面
 						</div>
-		<div id="jieshu" style="position: relative;margin-left: 30%;top: 15%;color:red;font-family: 仿宋;">
+		<div id="jieshu" style="position: relative;margin-left: 45%;top: 15%;color:red;font-family: 仿宋;">
 			&nbsp
 		</div>
 		<div id="leiShuliang" style="position: relative;margin-left: 30%;top: 17%;color:blue;font-family: 仿宋;">
@@ -167,9 +167,7 @@
     		stopjishi=1;
     		var a = $("#jishi").text();
 			$("#leis").find("button").attr("disabled","disabled");
-			//$("#jishi").text(a+"。踩到雷了,游戏结束！");
-			$("#jieshu").text("*处有雷，您排错了，游戏结束！");
-			//alert("踩到雷了,游戏结束");
+			$("#jieshu").text("×处有雷，您排错了，游戏结束！");
 			
 		}else{
 			//该方块没有雷。
@@ -258,10 +256,8 @@
     						stopjishi=1;
     						var a = $("#jishi").text();
 							$("#leis").find("button").attr("disabled","disabled");
-							//$("#jishi").text(a+"。*处排错了，游戏结束！");
 							
-							$("#jieshu").text("*处有雷，您排错了，游戏结束！");
-    						//alert("*处排错了，游戏结束");
+							$("#jieshu").text("*处无雷，您排错了，游戏结束！");
     					}
     				}
     				
@@ -348,8 +344,14 @@
 			var a = $("#jishi").text();
 			
 			//$("#jishi").text(a+"。恭喜你，胜利了！");
-			
-			$("#jieshu").text("恭喜您完成了排雷任务！");
+			var shengyu = $("#leiShuliang").text();
+			if(shengyu.indexOf("-") != -1 ){
+				return;//包含-，则不成功
+			}
+			if(shengyu.indexOf("0") != -1 ){
+				//return;//包含0，则成功
+				$("#jieshu").text("恭喜您完成了排雷任务！");
+			}
 			
 			}
 		
