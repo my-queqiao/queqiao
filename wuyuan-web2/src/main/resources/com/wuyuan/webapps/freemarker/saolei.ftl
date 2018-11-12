@@ -3,7 +3,7 @@
     	<meta charset="utf-8" />
         <title>java扫雷</title>
 </head>
-<body onselectstart="return false" style="background-color: aliceblue;"><!-- 该属性阻止html双击选中事件 -->
+<body onselectstart="return false" style="background-color: #d6d5b6;"><!-- 该属性阻止html双击选中事件 -->
 		
 		<a href="${request.contextPath!}/toLiuyanSaolei" target="_blank" 
 					style="position: absolute;left: 86%;top: 5%;color: black;font-family: 仿宋;font-size: 20px;cursor:pointer;">
