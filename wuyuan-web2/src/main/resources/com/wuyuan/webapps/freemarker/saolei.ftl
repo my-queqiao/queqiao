@@ -1,8 +1,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     	<meta charset="utf-8" />
+    	<meta name="baidu-site-verification" content="uzOhkR1Gj8" />
         <title>java扫雷</title>
 </head>
+<style type="text/css">
+@media screen and (max-width: 1400px) { /*当屏幕尺寸，小于1400px时，应用下面的CSS样式*/
+	#leis{
+		position: relative;margin-left: 20%;top: 20%;height: 400px;width: 750px;
+	}
+}
+@media screen and (min-width: 1400px) { /*当屏幕尺寸，大于1400px时，应用下面的CSS样式*/
+	#leis{
+		position: relative;margin-left: 30%;top: 20%;height: 400px;width: 750px;
+	}
+}
+</style>
 <body onselectstart="return false" style="background-color: #d6d5b6;"><!-- 该属性阻止html双击选中事件 -->
 		
 		<a href="${request.contextPath!}/toLiuyanSaolei" target="_blank" 
@@ -31,7 +44,7 @@
 			已耗时：0秒
 		</div>
 		
-		<div id="leis" style="position: relative;margin-left: 30%;top: 20%;height: 400px;width: 750px;" >
+		<div id="leis" style="" >
 			<!-- 展示雷区页面 -->
 		</div>
 </body>
@@ -114,7 +127,7 @@
 		
 		var ob2 = $(ob).text();
 		if(ob2 == "" || ob2 > 0 || ob2 == "雷" || ob2 == "×" || ob2 == "*"){ //叉号是踩到雷了
-    		$(ob).css("background-color","white");
+    		$(ob).css("background-color","#d6d5b6");
 		}else{
     		$(ob).css("background-color","black");
 		}
@@ -150,20 +163,20 @@
 				if(hasLei == true){  //如果有雷的方块都有“雷”字，并且“雷”字的数量等于实际雷数，
 					$("#"+i+"").text("雷");
 		    		$("#"+i+"").css("color","red");
-		    		$("#"+i+"").css("background-color","white");
+		    		$("#"+i+"").css("background-color","#d6d5b6");
 				}else if(roundNum > 0){
 					$("#"+i+"").text(roundNum);
 					$("#"+i+"").css("color","blue");
-					$("#"+i+"").css("background-color","white");
+					$("#"+i+"").css("background-color","#d6d5b6");
 				}else if(roundNum == 0){
 					$("#"+i+"").text("");
-					$("#"+i+"").css("background-color","white");
+					$("#"+i+"").css("background-color","#d6d5b6");
 				}
 			}
 			
     		$(ob).text("×");
     		$(ob).css("color","red");
-    		$(ob).css("background-color","white");
+    		$(ob).css("background-color","#d6d5b6");
     		stopjishi=1;
     		var a = $("#jishi").text();
 			$("#leis").find("button").attr("disabled","disabled");
@@ -174,10 +187,10 @@
 			var g = arr[1];
 			if(g != "0"){
 				$(ob).text(g);
-				$(ob).css("background-color","white");
+				$(ob).css("background-color","#d6d5b6");
 			}else{
 				$(ob).text("");
-				$(ob).css("background-color","white");
+				$(ob).css("background-color","#d6d5b6");
 			}
     		$(ob).css("color","blue");//到此点开了用户点击的方块，可以结束了。下面是为了扩展。
     		
@@ -241,14 +254,14 @@
     							if(hasLei == true){  //如果有雷的方块都有“雷”字，并且“雷”字的数量等于实际雷数，
     								$("#"+i+"").text("雷");
     					    		$("#"+i+"").css("color","red");
-    					    		$("#"+i+"").css("background-color","white");
+    					    		$("#"+i+"").css("background-color","#d6d5b6");
     							}else if(roundNum > 0){
     								$("#"+i+"").text(roundNum);
     								$("#"+i+"").css("color","blue");
-    								$("#"+i+"").css("background-color","white");
+    								$("#"+i+"").css("background-color","#d6d5b6");
     							}else if(roundNum == 0){
     								$("#"+i+"").text("");
-    								$("#"+i+"").css("background-color","white");
+    								$("#"+i+"").css("background-color","#d6d5b6");
     							}
     						}
     						
@@ -305,7 +318,7 @@
 		if(ob2 == "口"){	
     		$(ob).text("雷");
     		$(ob).css("color","red");
-    		$(ob).css("background-color","white");
+    		$(ob).css("background-color","#d6d5b6");
     		
     		var a = $("#leiShuliang").text();	
     		var a2 = a.split("：");
