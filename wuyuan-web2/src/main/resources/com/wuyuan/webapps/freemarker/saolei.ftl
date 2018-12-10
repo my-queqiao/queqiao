@@ -47,6 +47,9 @@
 		<div id="leis" style="" >
 			<!-- 展示雷区页面 -->
 		</div>
+		<div id="" style="position: relative;margin-left: 45%;top: 25%;" >
+			<a href="http://www.miitbeian.gov.cn" target="_blank">京ICP备18060161</a>
+		</div>
 </body>
 </html>
 
