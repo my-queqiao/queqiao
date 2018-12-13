@@ -7,12 +7,12 @@
 <style type="text/css">
 @media screen and (max-width: 1400px) { /*当屏幕尺寸，小于1400px时，应用下面的CSS样式*/
 	#leis{
-		position: relative;margin-left: 20%;top: 20%;height: 400px;width: 750px;
+		position: relative;margin-left: 20%;top: 22%;height: 400px;width: 750px;
 	}
 }
 @media screen and (min-width: 1400px) { /*当屏幕尺寸，大于1400px时，应用下面的CSS样式*/
 	#leis{
-		position: relative;margin-left: 30%;top: 20%;height: 400px;width: 750px;
+		position: relative;margin-left: 30%;top: 22%;height: 400px;width: 750px;
 	}
 }
 </style>
@@ -23,16 +23,22 @@
 						留言
 					</a>
 		
-						<div style="position:absolute;margin-left: 80%;top: 30%;color: blue;font-family: 仿宋;">
+						<!--<div style="position:absolute;margin-left: 80%;top: 30%;color: blue;font-family: 仿宋;">
 							自定义地雷数量：<input id="number" style="width: 15%;" value="99" /><br />
 							<input type="button" onclick="sendNumber();" value="确认" /><br/>
 							<span style="color: black;">提示1：格子总数不变，为扫雷高级标准的480个</span><br/>
 							<span style="color: black;">提示2：地雷数量可变，默认是99个</span>
-						</div>
+						</div>-->
+						
+					<div style="position:absolute;margin-left: 80%;top: 30%;color: blue;font-family: 仿宋;">
+						<input value="初级" onclick="jibie(1);" type="button"/>
+						<input value="中级" onclick="jibie(2);" type="button"/>
+						<input value="高级" onclick="jibie(3);" type="button"/>
+					</div>
 						
 						<div id="shuaxin" style="position:absolute;margin-left: 80%;top: 60%;color:red;font-family: 仿宋;">
 						<img style='width: 200px;height: 200px;' src='${request.contextPath!}/statics/img/timg.gif'/>
-							点喵刷新页面
+							<!--点喵刷新页面-->
 						</div>
 		<div id="jieshu" style="position: relative;margin-left: 45%;top: 15%;color:red;font-family: 仿宋;">
 			&nbsp
@@ -57,6 +63,39 @@
 <script src="${request.contextPath!}/statics/js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
 	
 <script>
+var stopjishi = 0;//不为0时，停止计时
+var jishi = 0;
+var interval = setInterval(function(){
+	if(stopjishi != 0){
+		return;
+	}
+	$("#jishi").text("已耗时："+jishi++ +"秒");
+},1000);
+
+	function jibie(grade){
+		//alert(grade);
+		//location.href="${request.contextPath!}/saolei";
+		getLeis(grade);
+		if(grade == 1) {//宽度230px
+			$("#leis").width(230);
+		}
+		if(grade == 2) {
+			$("#leis").width(400);
+		}
+		if(grade == 3) {
+			$("#leis").width(750);
+		}
+		clearInterval(interval);//结束上一次计时
+		jishi = 0;//重新从0计时
+		stopjishi = 0;//不停止计时，开始计时
+		interval = setInterval(function(){
+			if(stopjishi != 0){
+				return;
+			}
+			$("#jishi").text("已耗时："+jishi++ +"秒");
+		},1000);
+		$("#jieshu").text("");//清空
+	}
 	$("#shuaxin").click(function(){
 		location.reload();
 	});
@@ -72,7 +111,7 @@
 　　　　　　return false; 
 　　　　}else {
 		if(number>480){
-			alert("数字不能过大");
+			alert("数字不能过大"); 
 			return false;
 		}
 	　 }
@@ -82,9 +121,11 @@
 			});
 	}
 	var leis;
-	getLeis();
-	function getLeis(){ 
-		$.post('${request.contextPath!}/getLeis',
+	getLeis(1);$("#leis").width(230);
+	function getLeis(grade){
+		$("#leis").html('');
+		leis = 0;//点击等级之后，清零
+		$.post('${request.contextPath!}/getLeis?grade='+grade,
 				function(json){
 						leis = json.leis;
 						//private boolean hasLei;//此处有无雷
@@ -106,9 +147,11 @@
 							}else{
 								$("#leis").append("<span style='color: black;'>"+leis[i-1].roundNum+"</span>");
 							}*/
-							
-							
-							if(i % 30 == 0){ //每30个就换行。
+							var hh;
+							if(grade==1)hh=9
+							if(grade==2)hh=16
+							if(grade==3)hh=30
+							if(i % hh == 0){ //每30个就换行。
 								$("#leis").append("<br />");
 							}
 						}
@@ -142,7 +185,6 @@
 		
 	}
 	//鼠标单击
-	var stopjishi = 0;
 	function ol(ob){
 		var currentText = $(ob).text();
 		if(currentText == "雷" || currentText == "*"){
@@ -373,16 +415,8 @@
 		
 		
 	}
-	var jishi = 0;
-		setInterval(function(){
-					if(stopjishi != 0){
-						return;
-					}
-    					$("#jishi").text("已耗时："+jishi++ +"秒");
-    				},1000);
-    				
-    var totalLeiNumber = 0;
     function leftLeiNumber(){
+    	var totalLeiNumber = 0;
 		for(var i = 1;i<=leis.length;i++){
 			//                有无雷arr[0]     周围雷的数量arr[1]       周围雷的idsarr[2]      周围方块的idsarr[3]
 			//"value="+leis[i-1].hasLei+":"+leis[i-1].roundNum+":"+leis[i-1].leiIds+":"+leis[i-1].roundIds+" "+ 	

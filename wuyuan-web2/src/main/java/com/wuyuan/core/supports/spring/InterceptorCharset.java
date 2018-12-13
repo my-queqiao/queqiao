@@ -44,8 +44,8 @@ public class InterceptorCharset extends HandlerInterceptorAdapter {
 		
 		
 		
-		System.out.println("ipAddress:"+ipAddress);
-		System.out.println("过滤器，进来了吗？");
+		/*System.out.println("ipAddress:"+ipAddress);
+		System.out.println("过滤器，进来了吗？");*/
 		return true;
 	}
 

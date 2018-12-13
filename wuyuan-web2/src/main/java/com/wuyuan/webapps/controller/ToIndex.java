@@ -45,7 +45,7 @@ import com.wuyuan.webapps.pojo.Message2;
 @Controller
 @RequestMapping("/")
 public class ToIndex {
-	static{ //项目启动时，执行一个定时器：MyConstants.message中的消息，删除其中24小时之前的消息。
+	/*static{ //项目启动时，执行一个定时器：MyConstants.message中的消息，删除其中24小时之前的消息。
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			
@@ -64,7 +64,7 @@ public class ToIndex {
 				msgs.removeAll(msgs2);//移除消息中，24小时之前的消息。
 			}
 		}, new Date(), 1*60*60*1000L);// 延迟一秒执行，以后每隔一秒执行一次。（部署时执行，每小时执行一次）
-	}
+	}*/
 	@Autowired
 	private UserBiz userBiz;
 	
