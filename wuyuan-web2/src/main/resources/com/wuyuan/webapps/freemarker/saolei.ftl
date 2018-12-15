@@ -65,6 +65,9 @@
 <script src="${request.contextPath!}/statics/js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
 	
 <script>
+
+var t = "${request.contextPath!}";
+
 var stopjishi = 0;//不为0时，停止计时
 var jishi = 0;
 var interval = setInterval(function(){
