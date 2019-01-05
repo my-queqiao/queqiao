@@ -11,16 +11,16 @@
 <style type="text/css">
 @media screen and (max-width: 1400px) { /*当屏幕尺寸，小于1400px时，应用下面的CSS样式*/
 	#leis{
-		position: relative;margin-left: 20%;top: 22%;height: 400px;width: 750px;
+		position: relative;margin-left: 40%;top: 22%;height: 400px;width: 750px;
 	}
 }
 @media screen and (min-width: 1400px) { /*当屏幕尺寸，大于1400px时，应用下面的CSS样式*/
 	#leis{
-		position: relative;margin-left: 30%;top: 22%;height: 400px;width: 750px;
+		position: relative;margin-left: 40%;top: 22%;height: 400px;width: 750px;
 	}
 }
 </style>
-<body onselectstart="return false" style="background-color: #d6d5b6;"><!-- 该属性阻止html双击选中事件 -->
+<body onselectstart="return false" style="background-color: #282C34;"><!-- 该属性阻止html双击选中事件 -->
 		
 		<a href="<%=request.getContextPath()%>/toLiuyanSaolei" target="_blank" 
 					style="position: absolute;left: 86%;top: 5%;color: black;font-family: 仿宋;font-size: 20px;cursor:pointer;">
@@ -36,20 +36,19 @@
 						</div>-->
 						
 					<div style="position:absolute;margin-left: 80%;top: 30%;color: blue;font-family: 仿宋;">
-						<input value="初级" onclick="jibie(1);" type="button"/>
-						<input value="中级" onclick="jibie(2);" type="button"/>
-						<input value="高级" onclick="jibie(3);" type="button"/>
+						<input style="background-color: #282C34;" value="初级" onclick="jibie(1);" type="button"/><br>
+						<input style="background-color: #282C34;" value="中级" onclick="jibie(2);" type="button"/><br>
+						<input style="background-color: #282C34;" value="高级" onclick="jibie(3);" type="button"/>
 					</div>
 						
-						<div id="shuaxin" style="position:absolute;margin-left: 80%;top: 60%;color:red;font-family: 仿宋;">
+						<!--  <div id="shuaxin" style="position:absolute;margin-left: 80%;top: 60%;color:red;font-family: 仿宋;">
 						<img style='width: 200px;height: 200px;' src='<%=request.getContextPath()%>/statics/img/timg.gif'/>
-							<!--点喵刷新页面-->
-						</div>
-		<div id="jieshu" style="position: relative;margin-left: 45%;top: 15%;color:red;font-family: 仿宋;">
-			&nbsp
+						</div>-->
+		<div id="jieshu" style="position: absolute;margin-left: 45%;top: 15%;color:red;font-family: 仿宋;">
+			&nbsp&nbsp
 		</div>
-		<div id="leiShuliang" style="position: relative;margin-left: 30%;top: 17%;color:blue;font-family: 仿宋;">
-			剩余雷数量：0
+		<div id="leiShuliang" style="position: relative;margin-left: 30%;top: 17%;color:blue;font-family: 仿宋;float: left;">
+			剩余数量：0
 		</div>
 		<div id="jishi" style="position: relative;margin-left: 64%;top: 17%;color:blue;font-family: 仿宋;">
 			已耗时：0秒
@@ -59,7 +58,7 @@
 			<!-- 展示雷区页面 -->
 		</div>
 		<div id="" style="position: relative;margin-left: 45%;top: 25%;" >
-			<a href="http://www.miitbeian.gov.cn" target="_blank">京ICP备18060161</a>
+			<a style="color: aliceblue;" href="http://www.miitbeian.gov.cn" target="_blank">京ICP备18060161</a>
 		</div>
 </body>
 </html>
@@ -78,17 +77,24 @@ var interval = setInterval(function(){
 },1000);
 
 	function jibie(grade){
+		
 		//alert(grade);
 		//location.href="<%=request.getContextPath()%>/saolei";
 		getLeis(grade);
 		if(grade == 1) {//宽度230px
 			$("#leis").width(230);
+			//样式
+			$("#leis").css("margin-left","40%");
 		}
 		if(grade == 2) {
 			$("#leis").width(400);
+			//样式
+			$("#leis").css("margin-left","30%");
 		}
 		if(grade == 3) {
 			$("#leis").width(750);
+			//样式
+			$("#leis").css("margin-left","20%");
 		}
 		clearInterval(interval);//结束上一次计时
 		jishi = 0;//重新从0计时
@@ -230,7 +236,7 @@ var interval = setInterval(function(){
     		stopjishi=1;
     		var a = $("#jishi").text();
 			$("#leis").find("button").attr("disabled","disabled");
-			$("#jieshu").text("×处有雷，您排错了，游戏结束！");
+			$("#jieshu").text("×处有雷，游戏结束！");
 			
 		}else{
 			//该方块没有雷。
@@ -320,7 +326,7 @@ var interval = setInterval(function(){
     						var a = $("#jishi").text();
 							$("#leis").find("button").attr("disabled","disabled");
 							
-							$("#jieshu").text("*处无雷，您排错了，游戏结束！");
+							$("#jieshu").text("*处无雷，游戏结束！");
     					}
     				}
     				
@@ -374,7 +380,7 @@ var interval = setInterval(function(){
     		var a2 = a.split("：");
     		var number = a2[1];
     		
-    		$("#leiShuliang").text("剩余雷数量："+(number-1));	
+    		$("#leiShuliang").text("剩余数量："+(number-1));	
     		
 		}else if(ob2 == "雷"){
     		$(ob).text("口");
@@ -383,7 +389,7 @@ var interval = setInterval(function(){
     		var a2 = a.split("：");
     		var number = a2[1];
     		
-    		$("#leiShuliang").text("剩余雷数量："+(parseInt(number)+1));	
+    		$("#leiShuliang").text("剩余数量："+(parseInt(number)+1));	
 		}
 		//每一次右键都遍历一次 var leis;
 		var totalLeiNumber = 0;
@@ -413,7 +419,7 @@ var interval = setInterval(function(){
 			}
 			if(shengyu.indexOf("0") != -1 ){
 				//return;//包含0，则成功
-				$("#jieshu").text("恭喜您完成了排雷任务！");
+				$("#jieshu").text("success！");
 			}
 			
 			}
@@ -431,7 +437,7 @@ var interval = setInterval(function(){
 				totalLeiNumber++;//实际的雷数量
 			}
 		}
-    	$("#leiShuliang").text("剩余雷数量："+totalLeiNumber);			
+    	$("#leiShuliang").text("剩余数量："+totalLeiNumber);			
 	}
 		
 </script>
