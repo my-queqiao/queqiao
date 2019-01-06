@@ -47,10 +47,10 @@
 		<div id="jieshu" style="position: absolute;margin-left: 45%;top: 15%;color:red;font-family: 仿宋;">
 			&nbsp&nbsp
 		</div>
-		<div id="leiShuliang" style="position: relative;margin-left: 30%;top: 17%;color:blue;font-family: 仿宋;float: left;">
+		<div id="leiShuliang" style="position: relative;margin-left: 30%;top: 17%;color:aliceblue;font-family: 仿宋;float: left;">
 			剩余数量：0
 		</div>
-		<div id="jishi" style="position: relative;margin-left: 64%;top: 17%;color:blue;font-family: 仿宋;">
+		<div id="jishi" style="position: relative;margin-left: 64%;top: 17%;color:aliceblue;font-family: 仿宋;">
 			已耗时：0秒
 		</div>
 		
@@ -90,11 +90,17 @@ var interval = setInterval(function(){
 			$("#leis").width(400);
 			//样式
 			$("#leis").css("margin-left","30%");
+			if(screen.width >= 1400){
+				$("#leis").css("margin-left","38%");
+			}
 		}
 		if(grade == 3) {
 			$("#leis").width(750);
 			//样式
 			$("#leis").css("margin-left","20%");
+			if(screen.width >= 1400){
+				$("#leis").css("margin-left","40%");
+			}
 		}
 		clearInterval(interval);//结束上一次计时
 		jishi = 0;//重新从0计时
