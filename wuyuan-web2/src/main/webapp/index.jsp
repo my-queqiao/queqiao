@@ -11,12 +11,24 @@
 <style type="text/css">
 @media screen and (max-width: 1400px) { /*当屏幕尺寸，小于1400px时，应用下面的CSS样式*/
 	#leis{
-		position: relative;margin-left: 40%;top: 22%;height: 400px;width: 750px;
+		position: relative;margin-left: 41.5%;top: 22%;height: 400px;width: 750px;
+	}
+	#leiShuliang{
+		margin-left:41.5%;position: relative;top: 17%;color:aliceblue;font-family: 仿宋;float: left;
+	}
+	#jishi{
+		margin-left:51%;position: relative;top: 17%;color:aliceblue;font-family: 仿宋;
 	}
 }
 @media screen and (min-width: 1400px) { /*当屏幕尺寸，大于1400px时，应用下面的CSS样式*/
 	#leis{
-		position: relative;margin-left: 40%;top: 22%;height: 400px;width: 750px;
+		position: relative;margin-left: 42%;top: 22%;height: 400px;width: 750px;
+	}
+	#leiShuliang{
+		margin-left:42%;position: relative;top: 17%;color:aliceblue;font-family: 仿宋;float: left;
+	}
+	#jishi{
+		margin-left:49%;position: relative;top: 17%;color:aliceblue;font-family: 仿宋;
 	}
 }
 </style>
@@ -41,16 +53,16 @@
 						<input style="background-color: #282C34;" value="高级" onclick="jibie(3);" type="button"/>
 					</div>
 						
-						<!--  <div id="shuaxin" style="position:absolute;margin-left: 80%;top: 60%;color:red;font-family: 仿宋;">
-						<img style='width: 200px;height: 200px;' src='<%=request.getContextPath()%>/statics/img/timg.gif'/>
-						</div>-->
+						<div id="shuaxin" style="position:absolute;margin-left: 49%;top: 22%;color:red;font-family: 仿宋;">
+						<img style='width: 25px;height: 25px;' src='<%=request.getContextPath()%>/statics/img/76.jpg'/>
+						</div>
 		<div id="jieshu" style="position: absolute;margin-left: 45%;top: 15%;color:red;font-family: 仿宋;">
 			&nbsp&nbsp
 		</div>
-		<div id="leiShuliang" style="position: relative;margin-left: 30%;top: 17%;color:aliceblue;font-family: 仿宋;float: left;">
+		<div id="leiShuliang" style="">
 			剩余数量：0
 		</div>
-		<div id="jishi" style="position: relative;margin-left: 64%;top: 17%;color:aliceblue;font-family: 仿宋;">
+		<div id="jishi" style="">
 			已耗时：0秒
 		</div>
 		
@@ -75,31 +87,52 @@ var interval = setInterval(function(){
 	}
 	$("#jishi").text("已耗时："+jishi++ +"秒");
 },1000);
-
+	var gradeTemp = 1;
 	function jibie(grade){
-		
+		gradeTemp = grade;
 		//alert(grade);
 		//location.href="<%=request.getContextPath()%>/saolei";
 		getLeis(grade);
 		if(grade == 1) {//宽度230px
 			$("#leis").width(230);
 			//样式
-			$("#leis").css("margin-left","40%");
+			if(screen.width < 1400){
+				$("#leis").css("margin-left","41.5%");
+				$("#leiShuliang").css("margin-left","41.5%");
+				$("#jishi").css("margin-left","51%");
+			}
+			if(screen.width >= 1400){
+				$("#leis").css("margin-left","42%");
+				$("#leiShuliang").css("margin-left","42%");
+				$("#jishi").css("margin-left","49%");
+			}
 		}
 		if(grade == 2) {
 			$("#leis").width(400);
 			//样式
-			$("#leis").css("margin-left","30%");
+			if(screen.width < 1400){
+				$("#leis").css("margin-left","35%");
+				$("#leiShuliang").css("margin-left","35%");
+				$("#jishi").css("margin-left","57%");
+			}
 			if(screen.width >= 1400){
 				$("#leis").css("margin-left","38%");
+				$("#leiShuliang").css("margin-left","38%");
+				$("#jishi").css("margin-left","54%");
 			}
 		}
 		if(grade == 3) {
 			$("#leis").width(750);
 			//样式
-			$("#leis").css("margin-left","20%");
+			if(screen.width < 1400){
+				$("#leis").css("margin-left","22%");
+				$("#leiShuliang").css("margin-left","22%");
+				$("#jishi").css("margin-left","70%");
+			}
 			if(screen.width >= 1400){
-				$("#leis").css("margin-left","40%");
+				$("#leis").css("margin-left","30%");
+				$("#leiShuliang").css("margin-left","30%");
+				$("#jishi").css("margin-left","64%");
 			}
 		}
 		clearInterval(interval);//结束上一次计时
@@ -114,7 +147,8 @@ var interval = setInterval(function(){
 		$("#jieshu").text("");//清空
 	}
 	$("#shuaxin").click(function(){
-		location.reload();
+		//location.reload();
+		jibie(gradeTemp);
 	});
 	function sendNumber(){
 		var number = $("#number").val();
