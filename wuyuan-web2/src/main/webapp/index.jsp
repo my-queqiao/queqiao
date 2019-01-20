@@ -4,7 +4,7 @@
 <head>
     	<meta charset="utf-8" />
     	<meta name="baidu-site-verification" content="uzOhkR1Gj8" />
-        <title>java扫雷</title>
+        <title>在线扫雷</title>
         <meta name="description" 
         content="扫雷是一款大众类的益智小游戏，于1992年发行。游戏目标是在最短的时间内根据点击格子出现的数字找出所有非雷格子，同时避免踩雷，踩到一个雷即全盘皆输。">
 </head>
@@ -19,6 +19,9 @@
 	#jishi{
 		margin-left:51%;position: relative;top: 17%;color:aliceblue;font-family: 仿宋;
 	}
+	#shuaxin{
+		position:absolute;margin-left: 49%;top: 22%;
+	}
 }
 @media screen and (min-width: 1400px) { /*当屏幕尺寸，大于1400px时，应用下面的CSS样式*/
 	#leis{
@@ -29,6 +32,9 @@
 	}
 	#jishi{
 		margin-left:49%;position: relative;top: 17%;color:aliceblue;font-family: 仿宋;
+	}
+	#shuaxin{
+		position:absolute;margin-left: 49%;top: 22%;
 	}
 }
 </style>
@@ -53,7 +59,7 @@
 						<input style="background-color: #282C34;" value="高级" onclick="jibie(3);" type="button"/>
 					</div>
 						
-						<div id="shuaxin" style="position:absolute;margin-left: 49%;top: 22%;color:red;font-family: 仿宋;">
+						<div id="shuaxin" style="">
 						<img style='width: 25px;height: 25px;' src='<%=request.getContextPath()%>/statics/img/76.jpg'/>
 						</div>
 		<div id="jieshu" style="position: absolute;margin-left: 45%;top: 15%;color:red;font-family: 仿宋;">
@@ -119,6 +125,7 @@ var interval = setInterval(function(){
 				$("#leis").css("margin-left","38%");
 				$("#leiShuliang").css("margin-left","38%");
 				$("#jishi").css("margin-left","54%");
+				$("#shuaxin").css("margin-left","45%");
 			}
 		}
 		if(grade == 3) {
@@ -133,6 +140,7 @@ var interval = setInterval(function(){
 				$("#leis").css("margin-left","30%");
 				$("#leiShuliang").css("margin-left","30%");
 				$("#jishi").css("margin-left","64%");
+				$("#shuaxin").css("margin-left","45%");
 			}
 		}
 		clearInterval(interval);//结束上一次计时
