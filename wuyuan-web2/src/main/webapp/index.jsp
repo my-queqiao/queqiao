@@ -34,7 +34,7 @@
 		margin-left:49%;position: relative;top: 17%;color:aliceblue;font-family: 仿宋;
 	}
 	#shuaxin{
-		position:absolute;margin-left: 49%;top: 22%;
+		position:absolute;margin-left: 47%;top: 22%;
 	}
 }
 </style>
@@ -111,6 +111,7 @@ var interval = setInterval(function(){
 				$("#leis").css("margin-left","42%");
 				$("#leiShuliang").css("margin-left","42%");
 				$("#jishi").css("margin-left","49%");
+				$("#shuaxin").css("margin-left","47%");
 			}
 		}
 		if(grade == 2) {
@@ -125,7 +126,7 @@ var interval = setInterval(function(){
 				$("#leis").css("margin-left","38%");
 				$("#leiShuliang").css("margin-left","38%");
 				$("#jishi").css("margin-left","54%");
-				$("#shuaxin").css("margin-left","45%");
+				$("#shuaxin").css("margin-left","47.5%");
 			}
 		}
 		if(grade == 3) {
@@ -140,7 +141,7 @@ var interval = setInterval(function(){
 				$("#leis").css("margin-left","30%");
 				$("#leiShuliang").css("margin-left","30%");
 				$("#jishi").css("margin-left","64%");
-				$("#shuaxin").css("margin-left","45%");
+				$("#shuaxin").css("margin-left","48%");
 			}
 		}
 		clearInterval(interval);//结束上一次计时
