@@ -4,11 +4,14 @@
         <title>留言</title>
 </head>  
 <body>
-	<textarea id="liuyan" style="position: absolute;top: 5%;left: 10%;line-height: 20px;" rows="5" cols="100" placeholder="限制200字以内"></textarea>
-	<input style="position: absolute;top: 18%;left:25%" type="button" onclick="leave();" value="确认留言" />
+
+	<span id="tishi" style="position: absolute;top: 5%;left:25%;color:red" ></span>
+
+	<textarea id="liuyan" style="position: absolute;top: 10%;left: 10%;line-height: 20px;" rows="5" cols="100" placeholder="限制200字以内"></textarea>
+	<input style="position: absolute;top: 30%;left:25%" type="button" onclick="leave();" value="确认留言" />
 	
 	<ul id="leaveMsg" style="position: absolute;color:;line-height: 25px;background-color: ;
-    							left: 0%;top: 25%;height: 60%;width:90%;overflow:auto;">
+    							left: 0%;top: 40%;height: 60%;width:90%;overflow:auto;">
                		
     </ul>
 	
@@ -22,23 +25,28 @@
 	function leave(){
 		var ly = $("#liuyan").val();
 		if(ly == ""){
-			alert("不能为空");
+		    $("#tishi").html("不能为空")
+			//alert("不能为空");
 			return;
 		}
 		//保存留言
 		$.post('${request.contextPath!}/liuyanSaolei','liuyan='+ly,
 				function(json){
 					if(json.result == true){
-						alert(json.msg);
+						//alert(json.msg);
+						$("#tishi").html(json.msg)
+						
+						$("#liuyan").val("");
 						//刷新页面
-						location.href="${request.contextPath!}/toLiuyanSaolei"
+						//location.href="${request.contextPath!}/toLiuyanSaolei"
 					}else{
-						alert("留言失败");
+						//alert("留言失败");
+						$("#tishi").html("留言失败")
 					}
 				}	
 		)
 	}
-	getLeaveMsg();
+	//getLeaveMsg();
 	function getLeaveMsg(){ //获取留言列表
 		$.post('${request.contextPath!}/getLeaveMsgSaolei',
 				function(json){

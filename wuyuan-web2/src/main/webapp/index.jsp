@@ -40,12 +40,12 @@
 </style>
 <body onselectstart="return false" style="background-color: #282C34;"><!-- 该属性阻止html双击选中事件 -->
 		
-		<a href="<%=request.getContextPath()%>/toLiuyanSaolei" target="_blank" 
-					style="position: absolute;left: 86%;top: 5%;color: black;font-family: 仿宋;font-size: 20px;cursor:pointer;">
-						留言
+		<a href="<%=request.getContextPath()%>/toLiuyanSaolei" target="_blank"
+		onmousemove='move2(this);' onmouseout='out2(this);' 
+					style="position: absolute;right: 0%;top: 5%;color: black;font-family: 仿宋;font-size: 20px;">
+						<
 					</a>
-		
-						<!-- 
+						<!--  cursor:pointer;
 						<div style="position:absolute;margin-left: 80%;top: 30%;color: blue;font-family: 仿宋;">
 							自定义地雷数量：<input id="number" style="width: 15%;" value="99" /><br />
 							<input type="button" onclick="sendNumber();" value="确认" /><br/>
@@ -85,6 +85,14 @@
 <script src="<%=request.getContextPath()%>/statics/js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
 	
 <script>
+
+function move2(ob){
+	$(ob).text("留言");
+}
+function out2(ob){
+	$(ob).text("<");
+}
+
 var stopjishi = 0;//不为0时，停止计时
 var jishi = 0;
 var interval = setInterval(function(){
@@ -193,7 +201,8 @@ var interval = setInterval(function(){
 						//private String leiIds;//周围雷的id。用,隔开
 						for(var i = 1;i<=leis.length;i++){
 							var hasLei = leis[i-1].hasLei;
-							$("#leis").append("<button style='height: 25px;width: 25px;display:block;float:left; text-align:center;background-color:black;' "+
+							$("#leis").append("<button style='height: 25px;width: 25px;display:block;float:left;"+ 
+							"text-align:center;background-color:black;color:black;'"+
 												"id='"+leis[i-1].id+"'"+
 												"value="+leis[i-1].hasLei+":"+leis[i-1].roundNum+":"+leis[i-1].leiIds+":"+leis[i-1].roundIds+" "+
 												"oncontextmenu='oct(this);'"+
@@ -414,7 +423,9 @@ var interval = setInterval(function(){
 		var ob2 = $(ob).text();
 		//如果格子中出现了数字，则是排雷成了，不能再更改
 		if(ob2.indexOf("×") != -1 || ob2.indexOf("1") != -1 || ob2.indexOf("2") != -1 || ob2.indexOf("3") != -1 || 
-		   ob2.indexOf("4") != -1 || ob2.indexOf("5") != -1 || ob2.indexOf("6") != -1 || ob2.indexOf("7") != -1 || ob2.indexOf("8") != -1){
+		   ob2.indexOf("4") != -1 || ob2.indexOf("5") != -1 || ob2.indexOf("6") != -1 || ob2.indexOf("7") != -1 || 
+		   ob2.indexOf("8") != -1){
+			ol(ob);//有人习惯右键数字
 			return;
 		}
 		if(ob2 == ""){

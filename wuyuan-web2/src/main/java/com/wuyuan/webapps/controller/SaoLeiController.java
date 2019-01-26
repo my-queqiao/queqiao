@@ -25,10 +25,11 @@ import com.wuyuan.webapps.pojo.Lei;
 @Controller
 @RequestMapping("")
 public class SaoLeiController {
+	//废弃
 	@SecurityIgnoreHandler
 	@RequestMapping("saolei")
 	public String saolei(){
-		return "saolei";
+		return "saolei4444";
 	}
 	/**
 	 * 每行30个，共16行，共480个方块。雷的数量99

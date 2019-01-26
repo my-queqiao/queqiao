@@ -38,9 +38,9 @@
 				}	
 		)
 	}
-	getLeaveMsg();
+	//get***();
 	function getLeaveMsg(){ //获取留言列表
-		$.post('${request.contextPath!}/getLeaveMsg',
+		$.post('${request.contextPath!}/***',
 				function(json){
 					if(json.result == true){
 						var lys = json.data;
