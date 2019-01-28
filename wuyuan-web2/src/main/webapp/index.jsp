@@ -269,7 +269,12 @@ var interval = setInterval(function(){
 	//鼠标单击
 	function ol(ob){
 		var currentText = $(ob).text();
-		if(currentText == "雷" || currentText == "*"){
+		
+		var id5 = $(ob).attr("id")+1000;
+		var id55 = $("#"+id5+"").length;
+		
+		if(currentText == "雷" || currentText == "*" || id55 > 0){
+			console.log("停止单击");
 			return;
 		}
 		//                有无雷arr[0]     周围雷的数量arr[1]       周围雷的idsarr[2]      周围方块的idsarr[3]
@@ -361,16 +366,21 @@ var interval = setInterval(function(){
 					//"value="+leis[i-1].hasLei+":"+leis[i-1].roundNum+":"+leis[i-1].leiIds+":"+leis[i-1].roundIds+" "+    				
     				var arr2=value2.split(":");//arr[0]是周围一个id的有无雷
     				var m = $("#"+id+"").text();//周围一个id的text值
+    				
+    				var id6 = $("#"+id+"").attr("id")+1000;
+    				var id66 = $("#"+id6+"").length;//该周围点有没有插旗
+    				
+    				
     				if(m == "口"){
     					kous = kous+id+",";
     				}
-    				if(m == "" || m > 0){ //已经点开了。不处理，跳过每次循环
+    				if( (m == "" || m > 0) && id66 <= 0 ){ //已经点开了，但不是有雷。不处理，跳过每次循环
     					continue;
     				}else{
-    					if(arr2[0] == "true" && m == "雷"){//该方块排对了。
+    					if(arr2[0] == "true" && id66 > 0){//该方块排对了。m == "雷"
     						//如果全部正确的排完了，则单击剩余的方块，注意：调用单击方法
     						leiNumber++;
-    					}else if(arr2[0] == "false" && m == "雷"){//排错了
+    					}else if(arr2[0] == "false" && id66 > 0){//排错了 m == "雷"
     						
     						//排错之后显示所有雷的位置
     						for(var i = 1;i<=leis.length;i++){
@@ -442,7 +452,7 @@ var interval = setInterval(function(){
 			return;
 		}
 		var id3 = $(ob).attr("id")+1000;
-		/*if(ob2 == "" && $(ob).has("#"+id3+"")){
+		if(ob2 == "" && $(ob).has("#"+id3+"")){
 			//alert(id3);
 				//alert("dsfdsfsd");
 	    		$(ob).text("口");
@@ -453,15 +463,16 @@ var interval = setInterval(function(){
 	    		var number = a2[1];
 	    		
 	    		$("#leiShuliang").text("剩余数量："+(parseInt(number)+1));	
-			}*/
+			}
 		if(ob2 == ""){ //当该标签仅含有子标签时，text值为空
 			return;
 		}
 		if(ob2 == "口"){	
 			//$(ob).text("雷");     //  <img style="width:15px;" src="/queqiao/statics/img/sanjiaoqi.jpg">
-			$(ob).text("雷");//清空 口 字
+			$(ob).text("");//清空 口 字
 			var id2 = $(ob).attr("id");
-    		//$(ob).append("<img id='"+id2+1000+"'"+" style='width:15px;' src='<%=request.getContextPath()%>/statics/img/sanjiaoqi.jpg'/>");
+    		$(ob).append("<img id='"+id2+1000+"'"+
+    				"style='width: 19px;margin-left: -6px;' src='<%=request.getContextPath()%>/statics/img/sanjiaoqi.jpg'/>");
     		//var id = $(ob).attr("id");
     		//$("#"+id+1000+"").attr("src","<%=request.getContextPath()%>/statics/img/sanjiaoqi.jpg");
     		$(ob).css("color","red");
@@ -473,7 +484,7 @@ var interval = setInterval(function(){
     		
     		$("#leiShuliang").text("剩余数量："+(number-1));	
 		//}else if(ob2 == "雷"){
-		}else if(ob2 == "雷"){
+		}/* else if(ob2 == "雷"){
 			//alert(id3);
 			//alert("dsfdsfsd");
     		$(ob).text("口");
@@ -484,7 +495,7 @@ var interval = setInterval(function(){
     		var number = a2[1];
     		
     		$("#leiShuliang").text("剩余数量："+(parseInt(number)+1));	
-		}
+		} */
 		
 		//每一次右键都遍历一次 var leis;
 		var totalLeiNumber = 0;
@@ -497,10 +508,17 @@ var interval = setInterval(function(){
 			if(hasLei == true){  //如果有雷的方块都有“雷”字，并且“雷”字的数量等于实际雷数，
 				totalLeiNumber++;//实际的雷数量
 				
-				var lei = $("#"+i+"").text();
-				if(lei == "雷"){
+				var id = $("#"+i+"").attr("id")+1000;
+				var id2 = $("#"+id+"").length;
+				if(id2 > 0){
 					biaojiLei++; //标记的“雷”字数量
 				}
+				
+				/* var lei = $("#"+i+"").text();
+				if(lei == "雷"){
+					biaojiLei++; //标记的“雷”字数量
+				} */
+				
 			}
 		}
 		if(totalLeiNumber == biaojiLei){
