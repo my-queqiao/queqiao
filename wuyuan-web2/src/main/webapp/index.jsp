@@ -42,15 +42,15 @@
 		
 		<a href="<%=request.getContextPath()%>/toLiuyanSaolei" target="_blank"
 		onmousemove='move2(this);' onmouseout='out2(this);' 
-					style="position: absolute;right: 0%;top: 5%;color: black;font-family: 仿宋;font-size: 20px;">
+					style="position: absolute;right: 0%;top: 5%;color: #129FD2;font-family: 仿宋;font-size: 20px;">
 						<
 					</a>
 						<!--  cursor:pointer;
 						<div style="position:absolute;margin-left: 80%;top: 30%;color: blue;font-family: 仿宋;">
 							自定义地雷数量：<input id="number" style="width: 15%;" value="99" /><br />
 							<input type="button" onclick="sendNumber();" value="确认" /><br/>
-							<span style="color: black;">提示1：格子总数不变，为扫雷高级标准的480个</span><br/>
-							<span style="color: black;">提示2：地雷数量可变，默认是99个</span>
+							<span style="color: #129FD2;">提示1：格子总数不变，为扫雷高级标准的480个</span><br/>
+							<span style="color: #129FD2;">提示2：地雷数量可变，默认是99个</span>
 						</div>-->
 						
 					<div style="position:absolute;margin-left: 80%;top: 30%;color: blue;font-family: 仿宋;">
@@ -202,19 +202,21 @@ var interval = setInterval(function(){
 						for(var i = 1;i<=leis.length;i++){
 							var hasLei = leis[i-1].hasLei;
 							$("#leis").append("<button style='height: 25px;width: 25px;display:block;float:left;"+ 
-							"text-align:center;background-color:black;color:black;'"+
+							"text-align:center;background-color:#129FD2;color:#129FD2;'"+
 												"id='"+leis[i-1].id+"'"+
 												"value="+leis[i-1].hasLei+":"+leis[i-1].roundNum+":"+leis[i-1].leiIds+":"+leis[i-1].roundIds+" "+
 												"oncontextmenu='oct(this);'"+
 												"onclick='ol(this);'"+
 												"onmousemove='move(this);' "+
-												"onmouseout='out(this);'>"+"口"+"</button>");
+												"onmouseout='out(this);'>"+"口"+
+												
+												"</button>");
 							
 							
-							/*if(hasLei == true){
+							/*if(hasLei == true){             "<img id='"+leis[i-1].id+1000+"'/>"+
 								$("#leis").append("<span style='color:red;'>"+"雷"+"</span>");
 							}else{
-								$("#leis").append("<span style='color: black;'>"+leis[i-1].roundNum+"</span>");
+								$("#leis").append("<span style='color: #129FD2;'>"+leis[i-1].roundNum+"</span>");
 							}*/
 							var hh;
 							if(grade==1)hh=9
@@ -235,7 +237,17 @@ var interval = setInterval(function(){
 	})
 	//鼠标悬浮
 	function move(ob){
-    	$(ob).css("background-color","pink");
+    	//$(ob).css("background-color","pink");
+    	//$(ob).css("color","pink");
+    	
+    	var ob2 = $(ob).text();
+		if(ob2 == "" || ob2 > 0 || ob2 == "雷" || ob2 == "×" || ob2 == "*"){ //叉号是踩到雷了
+    		$(ob).css("background-color","#d6d5b6");
+		}else{
+    		$(ob).css("background-color","pink");
+    		$(ob).css("color","pink");
+		}
+    	
 	}
 	//鼠标悬浮移开
 	function out(ob){
@@ -244,7 +256,8 @@ var interval = setInterval(function(){
 		if(ob2 == "" || ob2 > 0 || ob2 == "雷" || ob2 == "×" || ob2 == "*"){ //叉号是踩到雷了
     		$(ob).css("background-color","#d6d5b6");
 		}else{
-    		$(ob).css("background-color","black");
+    		$(ob).css("background-color","#129FD2");
+    		$(ob).css("color","#129FD2");
 		}
 	
 	}
@@ -405,7 +418,7 @@ var interval = setInterval(function(){
     				setTimeout(function(){
     					for(var i=0;i<kous2.length;i++){
     					if(i != kous2.length-1){
-    						$("#"+kous2[i]+"").css("background-color","black");
+    						$("#"+kous2[i]+"").css("background-color","#129FD2");
     						}
     					}
     				},100); 
@@ -428,11 +441,29 @@ var interval = setInterval(function(){
 			ol(ob);//有人习惯右键数字
 			return;
 		}
-		if(ob2 == ""){
+		var id3 = $(ob).attr("id")+1000;
+		/*if(ob2 == "" && $(ob).has("#"+id3+"")){
+			//alert(id3);
+				//alert("dsfdsfsd");
+	    		$(ob).text("口");
+	    		$(ob).css("color","#129FD2");
+	    		$(ob).css("background-color","#129FD2");
+	    		var a = $("#leiShuliang").text();	
+	    		var a2 = a.split("：");
+	    		var number = a2[1];
+	    		
+	    		$("#leiShuliang").text("剩余数量："+(parseInt(number)+1));	
+			}*/
+		if(ob2 == ""){ //当该标签仅含有子标签时，text值为空
 			return;
 		}
 		if(ob2 == "口"){	
-    		$(ob).text("雷");
+			//$(ob).text("雷");     //  <img style="width:15px;" src="/queqiao/statics/img/sanjiaoqi.jpg">
+			$(ob).text("雷");//清空 口 字
+			var id2 = $(ob).attr("id");
+    		//$(ob).append("<img id='"+id2+1000+"'"+" style='width:15px;' src='<%=request.getContextPath()%>/statics/img/sanjiaoqi.jpg'/>");
+    		//var id = $(ob).attr("id");
+    		//$("#"+id+1000+"").attr("src","<%=request.getContextPath()%>/statics/img/sanjiaoqi.jpg");
     		$(ob).css("color","red");
     		$(ob).css("background-color","#d6d5b6");
     		
@@ -441,16 +472,20 @@ var interval = setInterval(function(){
     		var number = a2[1];
     		
     		$("#leiShuliang").text("剩余数量："+(number-1));	
-    		
+		//}else if(ob2 == "雷"){
 		}else if(ob2 == "雷"){
+			//alert(id3);
+			//alert("dsfdsfsd");
     		$(ob).text("口");
-    		$(ob).css("color","black");
+    		$(ob).css("color","#129FD2");
+    		$(ob).css("background-color","#129FD2");
     		var a = $("#leiShuliang").text();	
     		var a2 = a.split("：");
     		var number = a2[1];
     		
     		$("#leiShuliang").text("剩余数量："+(parseInt(number)+1));	
 		}
+		
 		//每一次右键都遍历一次 var leis;
 		var totalLeiNumber = 0;
 		var biaojiLei = 0;
