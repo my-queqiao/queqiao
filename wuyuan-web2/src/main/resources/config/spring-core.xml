@@ -57,6 +57,7 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	<!-- txAdvice是spring-webapp.xml中配置好的切面切点。以下是在切点中添加了事务，事务就添加在biz层。 -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="add*" propagation="REQUIRED" />
@@ -77,7 +78,7 @@
 
 	<!-- transaction configurations -->
 	
-	<!-- business component -->
+	<!-- 这就是控制反转、依赖注入的配置 -->
 	<context:component-scan base-package="com.wuyuan.webapps" />
 	<!-- <aop:config> -->
 	<!-- <aop:pointcut id="pointcut_parking" expression="execution(* com.chinadovey.parking.webapps.biz.*.*(..))" 
@@ -187,14 +188,14 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 
-	<!-- 切片 -->
-	<aop:aspectj-autoproxy />
+	
 
 	<mvc:resources
 		location="classpath:/com/wuyuan/webapps/statics/"
 		mapping="/statics/**" />
 	<mvc:default-servlet-handler />
-
+	<!-- 切片 -->
+	<aop:aspectj-autoproxy />
 	<!-- 自动注入配置 -->
 	<context:annotation-config />
 	<mvc:annotation-driven />

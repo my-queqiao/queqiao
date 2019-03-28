@@ -27,7 +27,7 @@
     <bean class="com.wuyuan.webapps.controller.HandshakeInterceptor"/>  
     </websocket:handshake-interceptors>
 </websocket:handlers> -->
-	<!-- transaction configurations -->
+	<!-- transaction configurations 这里是配置切面切点，为添加事务，说明在何处添加事务。-->
 	<aop:config>
 		<aop:pointcut id="pointcut_wuyuan"
 			expression="execution(* com.wuyuan.webapps.biz.impl.*.*(..))" />
