@@ -4,7 +4,7 @@
 <head>
     	<meta charset="utf-8" />
     	<meta name="baidu-site-verification" content="uzOhkR1Gj8" />
-        <title>在线扫雷</title>
+        <title>java在线扫雷</title>
         <meta name="description" 
         content="扫雷是一款大众类的益智小游戏，于1992年发行。游戏目标是在最短的时间内根据点击格子出现的数字找出所有非雷格子，同时避免踩雷，踩到一个雷即全盘皆输。">
 </head>

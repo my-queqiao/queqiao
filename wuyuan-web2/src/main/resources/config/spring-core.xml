@@ -189,7 +189,7 @@
 	</mvc:interceptors>
 
 	
-
+	<!-- 对内、对外都可以访问的静态资源 -->
 	<mvc:resources
 		location="classpath:/com/wuyuan/webapps/statics/"
 		mapping="/statics/**" />
