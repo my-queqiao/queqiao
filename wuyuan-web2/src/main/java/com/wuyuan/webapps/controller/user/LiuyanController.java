@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ import com.wuyuan.webapps.pojo.Liuyan;
 public class LiuyanController {
 	@Autowired
 	private LiuyanBiz liuyanBiz;
+	Logger logger = Logger.getLogger(LiuyanController.class);
 	
 	@SecurityAccessCheckable(resource=LiuyanRank.class)
 	@RequestMapping("toLiuyan")
