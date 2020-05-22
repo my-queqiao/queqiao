@@ -21,6 +21,8 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +31,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wuyuan.webapps.biz.UserBiz;
 import com.wuyuan.webapps.util.CaptchaUtil;
-import com.wuyuan.webapps.util.HttpClientUtil;
 import com.wuyuan.webapps.pojo.User;
 
 /**
@@ -150,7 +151,7 @@ public class ToRegister {
      * 程序自动注册用户。 （防止这种做法：只需要注册成功一次之后，将该session对应的验证码删掉就可以了。）
      */
     public void autoRegister(){
-    	HttpClientUtil httpClient = HttpClientUtil.getInstance();
+    	HttpClient httpClient = new HttpClient();
 		Integer a = 0;
 		while(true){
 			Map<String, String> params = new HashMap<String, String>();
@@ -169,39 +170,14 @@ public class ToRegister {
 			//headMap.put("User-Agent", "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36");
 			headMap.put("Cookie", "JSESSIONID=043B08A87BDAB2AEA1F2D56CC5E43C42");//头中放入这个，就模拟了浏览器的session。（大概tomcat服务器就根据这个cookie来判断是哪个session的）
 			
-			String res = httpClient.httpPost(url, params, headMap);
-			System.out.println("res:"+res);
+//			String res = httpClient.httpPost(url, params, headMap);
+//			new HttpMethod
+//			httpClient.executeMethod(method);
+//			System.out.println("res:"+res);
 			a++;
 		}
     }
     
-	public static void main(String[] args) {
-		//register(String username,String password,String gender,String address
-		
-		HttpClientUtil httpClient = HttpClientUtil.getInstance();
-		Integer a = 0;
-		while(true){
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("username", "re1"+a.toString());
-			params.put("password", "45");
-			params.put("gender", "?");
-			params.put("code", "ohly");
-			//params.put("address", "北京市-昌平区");
-			String url = "http://39.106.188.246:8080/queqiao/register";
-			//String res = HttpClientUtil.getInstance().httpPost(url, params);
-			//String res = httpClient.httpPost(url, params);
-			
-			Map<String, String> headMap = new HashMap<String, String>();
-			//headMap.put("Content-Type", "application/json"); 
-			//headMap.put("charset", "UTF-8");
-			//headMap.put("User-Agent", "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36");
-			headMap.put("Cookie", "JSESSIONID=F43490A317E62352AFC3E767F9BC1577");//头中放入这个，就模拟了浏览器的session。（大概tomcat服务器就根据这个cookie来判断是哪个session的）
-			
-			String res = httpClient.httpPost(url, params, headMap);
-			System.out.println("res:"+res);
-			a++;
-		}
-	}
 }
 
 

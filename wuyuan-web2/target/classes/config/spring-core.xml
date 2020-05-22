@@ -12,9 +12,7 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
 	default-autowire="byName" default-lazy-init="false">
 	<!-- 加载系统配置 -->
-	<context:property-placeholder
-		ignore-resource-not-found="true" local-override="true"
-		location="classpath:config/wuyuan.properties" />
+	<context:property-placeholder location="classpath:config/wuyuan.properties" />
 
 	<!-- 数据源配置 -->
 	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource"
@@ -34,8 +32,8 @@
 		<property name="houseKeepingTestSql" value="${proxool.jdbc.pool.houseKeepingTestSql}" />
 	</bean>
 
-	<!-- 数据库会话工厂 -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<!-- 数据库会话工厂	mySqlSessionFactory,原名：sqlSessionFactory -->
+	<bean id="mySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations"
 			value="classpath*:com/wuyuan/webapps/mappers/**/*.xml" />
@@ -51,12 +49,26 @@
 			</list>
 		</property>
 	</bean>
-
+	<!-- 自动扫描 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.wuyuan.webapps.mappers" />
+		<!-- 加了这行代码，可以解决：context:property-placeholder没有读取到配置文件
+		，从而导致的：数据源配置读取不到数据，从而报错：类型转换错误，字符串不能转成int类型 
+		也有人说是版本错误。mybatis、mybatis-spring，的版本不匹配。-->
+    	<property name="sqlSessionFactoryBeanName" value="mySqlSessionFactory" />
+	</bean>
+	<!-- transaction configurations 这里是配置切面切点，为添加事务，说明在何处添加事务。-->
+	<aop:config>
+		<aop:pointcut id="pointcut_wuyuan"
+			expression="execution(* com.wuyuan.webapps.biz.impl.*.*(..))" />
+		<aop:advisor pointcut-ref="pointcut_wuyuan" advice-ref="txAdvice" />
+	</aop:config>
 	<!-- 事务管理器配置 -->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	<!-- txAdvice是spring-webapp.xml中配置好的切面切点。以下是在切点中添加了事务，事务就添加在biz层。 -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="add*" propagation="REQUIRED" />
@@ -77,7 +89,7 @@
 
 	<!-- transaction configurations -->
 	
-	<!-- business component -->
+	<!-- 这就是控制反转、依赖注入的配置 -->
 	<context:component-scan base-package="com.wuyuan.webapps" />
 	<!-- <aop:config> -->
 	<!-- <aop:pointcut id="pointcut_parking" expression="execution(* com.chinadovey.parking.webapps.biz.*.*(..))" 
@@ -187,14 +199,14 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 
-	<!-- 切片 -->
-	<aop:aspectj-autoproxy />
-
+	
+	<!-- 对内、对外都可以访问的静态资源 -->
 	<mvc:resources
 		location="classpath:/com/wuyuan/webapps/statics/"
 		mapping="/statics/**" />
 	<mvc:default-servlet-handler />
-
+	<!-- 切片 -->
+	<aop:aspectj-autoproxy />
 	<!-- 自动注入配置 -->
 	<context:annotation-config />
 	<mvc:annotation-driven />

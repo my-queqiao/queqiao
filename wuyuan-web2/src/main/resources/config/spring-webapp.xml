@@ -14,10 +14,6 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
 	default-autowire="byName" default-lazy-init="false">
 
-	<!-- myBatis database access Objects -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.wuyuan.webapps.mappers" />
-	</bean>
 	<!-- ws -->
 <!--   	<bean id="websocket" class="com.wuyuan.webapps.controller.WebsocketEndPoint">
 	</bean>  
@@ -27,13 +23,6 @@
     <bean class="com.wuyuan.webapps.controller.HandshakeInterceptor"/>  
     </websocket:handshake-interceptors>
 </websocket:handlers> -->
-	<!-- transaction configurations 这里是配置切面切点，为添加事务，说明在何处添加事务。-->
-	<aop:config>
-		<aop:pointcut id="pointcut_wuyuan"
-			expression="execution(* com.wuyuan.webapps.biz.impl.*.*(..))" />
-		<aop:advisor pointcut-ref="pointcut_wuyuan" advice-ref="txAdvice" />
-	</aop:config>
-
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="512000000"></property>

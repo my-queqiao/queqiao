@@ -3,6 +3,7 @@ package com.wuyuan.core.supports.spring;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,7 +45,7 @@ public class InterceptorSessiionCheck extends HandlerInterceptorAdapter {
 			if (logger.isDebugEnabled()) {
 				logger.info("Request:" + request.getRequestURL());
 			}
-			// 忽略
+			// 忽略 （对该注解@SecurityIgnoreHandler，放行）
 			if (handlerMethod.getMethodAnnotation(SecurityIgnoreHandler.class) != null) {
 				if (logger.isDebugEnabled()) {
 					logger.info(SecurityIgnoreHandler.class.getName());
@@ -57,7 +58,6 @@ public class InterceptorSessiionCheck extends HandlerInterceptorAdapter {
 			 */
 			String userName = (String) request.getSession().getAttribute("currentUserName");
 			SecuObject secuObj = (SecuObject)request.getSession().getAttribute(userName+"Authority");
-			
 			if (secuObj == null) { //未登录
 				if (logger.isInfoEnabled()) {
 					logger.info("=============认证失败================");

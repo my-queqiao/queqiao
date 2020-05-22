@@ -33,7 +33,7 @@ public class LiuyanSaoleiController {
 			return "liuyanSaolei";
 	}
 	@SecurityIgnoreHandler
-	@SecurityAccessCheckable(resource=LiuyanRank.class)
+	//@SecurityAccessCheckable(resource=LiuyanRank.class)
 	@RequestMapping("liuyanSaolei")
 	@ResponseBody
 	public JSONObject liuyan(String liuyan){
