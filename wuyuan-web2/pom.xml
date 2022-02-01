@@ -388,7 +388,7 @@
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>1.4.5</version>
+			<version>1.4.19</version>
 		</dependency>
 		<!--javassist分析、编辑和创建Java字节码的类库 -->
 		<dependency>
